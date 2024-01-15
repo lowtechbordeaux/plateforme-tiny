@@ -7,9 +7,12 @@
     "gen": "supabase gen types typescript --project-id ozktztkbyyrnigmkrmbn > database.types.ts"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-regular-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@radix-ui/react-avatar": "^1.0.4",
-    "@radix-ui/react-icons": "^1.3.0",
-    "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
@@ -26,7 +29,8 @@
     "tailwind-merge": "^2.2.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.1.3"
+    "typescript": "5.1.3",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "20.3.1",

@@ -1,15 +1,15 @@
 import { createClient } from '@/lib/utils/supabase/server';
-import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache'
 
 import moment from 'moment';
 import { Tables } from '@/database.types';
 import Link from "next/link"
 
-import { ChatBubbleIcon, HeartIcon, HeartFilledIcon } from '@radix-ui/react-icons'
 import { CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card"
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 type AnnonceWithLikesAndComments = Tables<'annonces'> & {
     likes_count: { count: number }[];
@@ -18,10 +18,8 @@ type AnnonceWithLikesAndComments = Tables<'annonces'> & {
 }
 export default async function Annonce({
     annonce,
-    preview,
 }: {
     annonce: AnnonceWithLikesAndComments;
-    preview?: boolean;
 }) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser()
@@ -34,7 +32,6 @@ export default async function Annonce({
     let liked = false
 
     if (user) {
-
         const { data: ownAnnonce, error } = await supabase
             .from("annonces")
             .select(` 
@@ -113,12 +110,12 @@ export default async function Annonce({
                 <CardFooter className="p-2 pb-4 grid gap-2">
                     <div className="flex items-center w-full">
                         <Button size="icon" variant="ghost" ssrClick={user && like.bind(null, annonce.id)}>
-                            {liked ? <HeartFilledIcon /> : <HeartIcon />}
+                            <FontAwesomeIcon icon={`fa-${liked ? 'solid' : 'regular'} fa-heart`} />
                             <span className='ml-2'>{nbLikes}</span>
                             <span className="sr-only">Like</span>
                         </Button>
                         <Button size="icon" variant="ghost" ssrClick={user && comment.bind(null, annonce.id)}>
-                            <ChatBubbleIcon color={commented ? "blue" : "black"} />
+                            <FontAwesomeIcon icon={`fa-${commented ? 'solid' : 'regular'} fa-comment`} />
                             <span className='ml-2'>{nbComments}</span>
                             <span className="sr-only">Comments</span>
                         </Button>

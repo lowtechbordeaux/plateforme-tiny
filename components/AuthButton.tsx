@@ -3,6 +3,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getUser } from "@/lib/user";
 
+import { Button } from "@/components/ui/button"
+
 export default async function AuthButton() {
   const supabase = createClient();
   const user = await getUser(supabase)
@@ -17,19 +19,23 @@ export default async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
+      <Link href="/profile">
+        <span className="mx-2">Profile</span>
+      </Link>
       <form action={signOut}>
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
+        <Button className="py-2 px-4">
           Logout
-        </button>
+        </Button>
       </form>
     </div>
   ) : (
     <Link
       href="/login"
-      className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
+      className="py-2 px-3"
     >
-      Login
+      <Button>
+        Login
+      </Button>
     </Link>
   );
 }

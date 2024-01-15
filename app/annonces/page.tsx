@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/utils/supabase/server';
-import { cookies } from 'next/headers';
 
 import Link from "next/link"
 
@@ -41,7 +40,7 @@ export default async function Annonces() {
 
             <div className="flex flex-col mx-4 w-full max-w-lg">
                 {annonces?.map((annonce) => (
-                    <Annonce key={annonce.id} annonce={annonce} preview />
+                    <Annonce key={annonce.id} annonce={annonce} />
                 ))}
             </div>
         </div>
