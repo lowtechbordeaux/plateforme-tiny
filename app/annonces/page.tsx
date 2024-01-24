@@ -39,7 +39,7 @@ export default async function Annonces() {
                     <CardDescription>Retrouvez ici les annonces de nos membres afin de participer au projet !</CardDescription>
                 </CardHeader>
                 {canManageAnnonces &&
-                    <div className='flex items-center'>
+                    <div className='flex items-center p-6'>
                         <Link href="/annonce/new"><Button>Nouvelle annonce</Button></Link>
                     </div>
                 }

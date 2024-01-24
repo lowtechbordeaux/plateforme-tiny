@@ -6,9 +6,12 @@ export default function Header() {
     <nav className="flex justify-center border-b border-b-foreground/10 h-16">
       <div className="w-full max-w-4xl flex justify-between items-center p-3 text-sm">
         <Link href="/">
-          <span>🌴</span>
-          {" "}
-          < span > LowTechLabBdx</span>
+
+          <img
+            src="./assets/images/lowtech-title.png"
+            className="w-32"
+            alt="lowtechbordeaux title"
+          />
         </Link>
         <nav>
           <Link href="/annonces">

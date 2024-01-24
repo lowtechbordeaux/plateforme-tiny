@@ -51,6 +51,12 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "yellowy-1": "#f4d65b",
+        "greeny-1": "#233c3d",
+        "greeny-2": "#507b6e",
+        "greeny-3": "#71b8ad",
+        "greeny-4": "#c3dab8",
+        "bluey-1": "#233d5c",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -70,6 +76,14 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      backgroundImage: {
+        "roue-2": "url('/assets/images/roue2.png')",
+        instagram: "url('/assets/icons/instagram.png')",
+        twitter: "url('/assets/icons/twitter.png')",
+        youtube: "url('/assets/icons/youtube.png')",
+        facebook: "url('/assets/icons/facebook.png')",
+        discord: "url('/assets/icons/discord.png')",
       },
     },
   },
