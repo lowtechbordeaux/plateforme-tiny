@@ -1,6 +1,5 @@
 import { Tables } from '@/database.types';
 import { Card, CardDescription, CardContent, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import ProfileAvatar from './ProfileAvatar';
 
 export default async function Profile(

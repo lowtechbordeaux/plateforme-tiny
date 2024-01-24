@@ -30,6 +30,13 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         .eq('id', id)
         .single();
 
+    if (error) {
+        throw error;
+    }
+    if (!profile) {
+        redirect('/annuaire')
+    }
+    const isMyProfile = user && user.id === profile.user_id;
 
     const signOut = async () => {
         "use server";
@@ -42,19 +49,16 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     return (
         <div className='flex flex-col items-center'>
 
-            {user &&
+            {isMyProfile &&
                 <div className='mt-4 flex flex-col items-center'>
-
-
                     <div className='flex mb-4 space-x-2'>
-
 
                         <Link href={`/profil/edit`}>
                             <Button size="sm">Modifier mon profil</Button>
                         </Link>
 
                         <Dialog>
-                            <DialogTrigger>
+                            <DialogTrigger asChild>
                                 <Button size="sm" variant="destructive">Supprimer mon profil</Button>
                             </DialogTrigger>
                             <DialogContent>
@@ -62,7 +66,6 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                                     <DialogTitle>Etes vous sûr?</DialogTitle>
                                     <DialogDescription>
                                         Votre compte ne sera pas supprimé, mais votre profil disparaitra de l'annuaire.
-
                                     </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter>
@@ -86,10 +89,10 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                 </div>
             }
 
-            <Profile profile={profile} />
+            {profile && <Profile profile={profile} />}
 
             {
-                user &&
+                isMyProfile &&
                 <div className='mt-4 text-center text-muted-foreground'>
                     <p>
                         Votre profil est visible publiquement et apparait dans l'annuaire.

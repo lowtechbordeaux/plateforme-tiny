@@ -1,7 +1,6 @@
 'use client'
 
 import { useFormState, useFormStatus } from 'react-dom'
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 import { editProfile } from './actions'
@@ -75,6 +74,15 @@ export default function EditForm({
                         inputReq={{
                             required: false,
                             maxLength: 400,
+                        }}
+                    />
+                    <InputField
+                        name='avatar_file'
+                        type="file"
+                        title='Avatar'
+                        validationErrors={state.validationErrors}
+                        inputReq={{
+                            required: false,
                         }}
                     />
                     <InputField

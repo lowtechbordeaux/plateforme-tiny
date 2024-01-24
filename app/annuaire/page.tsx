@@ -21,9 +21,6 @@ export default async function Annuaire() {
             </div>
         )
     }
-    profiles = profiles.concat(profiles)
-    //profiles = profiles.concat(profiles)
-    profiles = profiles.concat(profiles)
 
     return (
         <Card className='container'>

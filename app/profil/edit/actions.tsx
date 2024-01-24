@@ -14,6 +14,8 @@ const RawProfile = z.object({
     organisation: z.string(),
     email: z.string(),
     telephone: z.string(),
+    avatar_file: z.instanceof(File).optional(),
+    avatar_url: z.string().optional(),
 });
 type RawProfile = z.infer<typeof RawProfile>;
 
@@ -33,6 +35,21 @@ export async function editProfile(prevState: any, formData: FormData):
     const profile: RawProfile = r.data
 
     const supabase = createClient()
+
+    if (profile.avatar_file) {
+        const filePath = Date.now() + '-' + profile.avatar_file.name
+        const avatarData = await profile.avatar_file.arrayBuffer()
+        const { error } = await supabase.storage.from('avatar').upload(filePath, avatarData);
+        if (error) {
+            console.error(error)
+            return {
+                submitError: error.message
+            }
+        }
+        profile.avatar_url = filePath
+        delete profile.avatar_file
+    }
+
     const user = await getUser(supabase)
     if (!user) {
         return {
