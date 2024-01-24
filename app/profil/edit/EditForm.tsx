@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 import { editProfile } from './actions'
-import FormInput from '@/components/FormInput'
+import { InputField, TextAreaField } from '@/components/ui/forms'
 import { Tables } from '@/database.types'
 
 type InitialState = {
@@ -37,21 +37,15 @@ export default function EditForm({
             <p className='text-sm text-center text-muted-foreground'>Remplissez votre profil pour apparaitre dans l'annuaire, et rejoignez d'autres passionnés de low-techs !</p>
             <form action={formAction}>
                 <input type="hidden" name="id" value={profile?.id} />
+
+                <h3 className='font-bold text-xl'>
+                    Bio
+                </h3>
+
                 <div className='flex flex-col justify-center my-4'>
-                    <FormInput
+                    <InputField
                         name='name'
-                        title='Nom' placeHolder='Menuisier'
-                        validationErrors={state.validationErrors}
-                        defaultValues={profile}
-                        inputReq={{
-                            required: true,
-                            minLength: 3,
-                            maxLength: 20,
-                        }}
-                    />
-                    <FormInput
-                        name='short_desc'
-                        title='Description rapide'
+                        title='Nom'
                         placeHolder='Menuisier'
                         validationErrors={state.validationErrors}
                         defaultValues={profile}
@@ -61,15 +55,69 @@ export default function EditForm({
                             maxLength: 20,
                         }}
                     />
-                    <FormInput
+                    <InputField
+                        name='short_desc'
+                        title='Description rapide'
+                        placeHolder='Menuisier'
+                        validationErrors={state.validationErrors}
+                        defaultValues={profile}
+                        inputReq={{
+                            required: false,
+                            maxLength: 20,
+                        }}
+                    />
+                    <TextAreaField
                         name='description'
-                        title='Description complète'
+                        title='Description avancée'
                         placeHolder='Specialiste en portes sans poignées'
                         validationErrors={state.validationErrors}
                         defaultValues={profile}
                         inputReq={{
                             required: false,
                             maxLength: 400,
+                        }}
+                    />
+                    <InputField
+                        name='organisation'
+                        title="Faites vous partie d'un groupe de travail ?"
+                        placeHolder='Asso LesEcolos'
+                        validationErrors={state.validationErrors}
+                        defaultValues={profile}
+                        inputReq={{
+                            required: false,
+                            maxLength: 15,
+                        }}
+                    />
+
+                    <h3 className='font-bold text-xl'>
+                        Contact
+                    </h3>
+                    <i className='font-light text-sm mb-2'>
+                        Indiquez les coordonnées où vous souhaitez que les autre membres puissent vous contacter
+                    </i>
+
+                    <InputField
+                        name='telephone'
+                        type="tel"
+                        title='Numéro de telephone'
+                        placeHolder='+336123456789'
+                        validationErrors={state.validationErrors}
+                        defaultValues={profile}
+                        inputReq={{
+                            required: false,
+                            maxLength: 15,
+                        }}
+                    />
+                    <InputField
+                        name='email'
+                        title='Email'
+                        type="email"
+                        placeHolder='jean@openmail.com'
+                        validationErrors={state.validationErrors}
+                        defaultValues={profile}
+                        inputReq={{
+                            required: false,
+                            maxLength: 50,
                         }}
                     />
                     <i className='mb-4 text-center text-sm'>En enregistrant ces informations, vous acceptez de les faire apparaitre publiquement dans l'annuaire.</i>

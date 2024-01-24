@@ -139,32 +139,41 @@ export interface Database {
         Row: {
           created_at: string
           description: string | null
+          email: string | null
           id: string
           name: string
+          organisation: string | null
           short_desc: string | null
+          telephone: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           description?: string | null
+          email?: string | null
           id?: string
           name: string
+          organisation?: string | null
           short_desc?: string | null
-          user_id: string
+          telephone?: string | null
+          user_id?: string
         }
         Update: {
           created_at?: string
           description?: string | null
+          email?: string | null
           id?: string
           name?: string
+          organisation?: string | null
           short_desc?: string | null
+          telephone?: string | null
           user_id?: string
         }
         Relationships: [
           {
             foreignKeyName: "user_profiles_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
           }

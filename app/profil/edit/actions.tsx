@@ -9,8 +9,11 @@ import { getUser } from '@/lib/user';
 const RawProfile = z.object({
     id: z.string(),
     name: z.string().min(3),
-    short_desc: z.string().min(3),
+    short_desc: z.string(),
     description: z.string(),
+    organisation: z.string(),
+    email: z.string(),
+    telephone: z.string(),
 });
 type RawProfile = z.infer<typeof RawProfile>;
 

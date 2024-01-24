@@ -27,34 +27,32 @@ export default async function Annuaire() {
 
     return (
         <Card className='container'>
-            <div className='flex justify-center mb-4'>
-                <CardHeader>
-                    <CardTitle>Annuaire</CardTitle>
-                    <CardDescription>Retrouvez ici tous les acteurs low-tech de la region !</CardDescription>
-                </CardHeader>
-            </div>
+            <CardHeader>
+                <CardTitle>Annuaire</CardTitle>
+                <CardDescription>Retrouvez ici tous les acteurs low-tech de la region !</CardDescription>
+            </CardHeader>
             <CardContent>
                 <div className="flex justify-center flex-wrap mx-4 w-full">
                     {profiles?.length ? profiles.map((profile) => (
                         <Link key={profile.id} href={`/profil/${profile.id}`}>
                             <Card
-                                className='flex flex-col items-center w-32 h-32 overflow-hidden m-2 p-2'
+                                className='flex flex-col items-center w-64 h-64 overflow-hidden m-2 p-2'
                             >
-                                <ProfileAvatar profile={profile} />
-
+                                <ProfileAvatar profile={profile} className='mb-2 h-32 w-32' />
                                 <CardTitle className="mt-2">{profile.name}</CardTitle>
                                 <CardDescription className="mt-2">{profile.short_desc}</CardDescription>
+                                <CardDescription className="mt-2">{profile.organisation}</CardDescription>
                             </Card>
-                        </Link>
+                        </Link >
                     ))
                         :
                         <div>
                             Aucun utilisateur n'est inscrit
                         </div>
                     }
-                </div>
-            </CardContent>
-        </Card>
+                </div >
+            </CardContent >
+        </Card >
     )
 }
 //

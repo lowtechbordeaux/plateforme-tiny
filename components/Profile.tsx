@@ -7,16 +7,29 @@ export default async function Profile(
     { profile }: { profile: Tables<'user_profiles'> }
 ) {
     return (
-        <Card className='w-64'>
-            <div className="flex flex-row w-full p-6">
-                <ProfileAvatar profile={profile} />
-                <div className='flex flex-col space-y-1.5 ml-4'>
+        <Card className=' p-4'>
+            <div className="flex flex-row justify-between w-full p-6">
+                <div className='flex flex-col space-y-1.5 mr-8'>
                     <CardTitle>{profile.name}</CardTitle>
+                    <CardDescription className='italic'>{profile.organisation}</CardDescription>
                     <CardDescription>{profile.short_desc}</CardDescription>
                 </div>
+                <ProfileAvatar profile={profile} className="h-24 w-24" />
             </div>
             <CardContent>
-                <span>{profile.description}</span>
+                <h2 className='font-bold text-muted-foreground text-sm'>Biographie</h2>
+                <div>
+                    {profile.description?.split('\n').map((line, i) => (
+                        <p key={i}>{line}</p>
+                    ))}
+                </div>
+
+                <h2 className='mt-4 font-bold'>Contact</h2>
+
+                <h3 className='mt-2 font-bold text-muted-foreground text-sm'>Mail</h3>
+                <span>{profile.email}</span>
+                <h3 className='mt-2 font-bold text-muted-foreground text-sm'>Telephone</h3>
+                <span>{profile.telephone}</span>
             </CardContent>
 
         </Card>
