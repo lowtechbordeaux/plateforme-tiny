@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/utils/supabase/server';
 import { getUser, userCanManageAnnonces } from '@/lib/user';
+import { Card, CardHeader, CardDescription, CardContent, CardTitle } from '@/components/ui/card';
 
 import Link from "next/link"
 
@@ -31,19 +32,28 @@ export default async function Annonces() {
         )
     }
     return (
-        <div>
-            {canManageAnnonces &&
-                <div className='flex justify-center my-4'>
-                    <Link href="/annonces/create"><Button>Nouvelle annonce</Button></Link>
-                </div>
-            }
-
-            <div className="flex flex-col mx-4 w-full max-w-lg">
-                {annonces?.map((annonce) => (
-                    <Annonce key={annonce.id} annonce={annonce} />
-                ))}
+        <Card className='container'>
+            <div className='w-full flex justify-between'>
+                <CardHeader>
+                    <CardTitle>Annonces</CardTitle>
+                    <CardDescription>Retrouvez ici les annonces de nos membres afin de participer au projet !</CardDescription>
+                </CardHeader>
+                {canManageAnnonces &&
+                    <div className='flex items-center'>
+                        <Link href="/annonce/new"><Button>Nouvelle annonce</Button></Link>
+                    </div>
+                }
             </div>
-        </div>
+            <CardContent>
+                <div className="flex flex-col">
+                    {annonces?.map((annonce) => (
+                        <div key={annonce.id} className='mb-4'>
+                            <Annonce annonce={annonce} />
+                        </div>
+                    ))}
+                </div>
+            </CardContent>
+        </Card>
     )
 }
 //

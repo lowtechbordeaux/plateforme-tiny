@@ -104,17 +104,17 @@ ALTER TABLE ONLY "public"."annonces"
 ALTER TABLE ONLY "public"."user_roles"
     ADD CONSTRAINT "user_roles_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
-CREATE POLICY "Admin can assign role" ON "public"."user_roles" FOR INSERT TO authenticated WITH CHECK ((EXISTS ( SELECT 1
+CREATE POLICY "Admin can assign role" ON "public"."user_roles" FOR INSERT WITH CHECK ((EXISTS ( SELECT 1
    FROM public.user_roles user_roles_1
   WHERE ((auth.uid() = user_roles_1.user_id) AND (user_roles_1.role = 'admin'::public.roles)))));
 
-CREATE POLICY "Enable delete for users based on user_id" ON "public"."annonce_comments" FOR DELETE TO authenticated USING ((auth.uid() = user_id));
+CREATE POLICY "Enable delete for users based on user_id" ON "public"."annonce_comments" FOR DELETE USING ((auth.uid() = user_id));
 
-CREATE POLICY "Enable delete for users based on user_id" ON "public"."annonce_likes" FOR DELETE TO authenticated USING ((auth.uid() = user_id));
+CREATE POLICY "Enable delete for users based on user_id" ON "public"."annonce_likes" FOR DELETE USING ((auth.uid() = user_id));
 
-CREATE POLICY "Enable insert for users based on user_id" ON "public"."annonce_comments" FOR INSERT TO authenticated WITH CHECK ((auth.uid() = user_id));
+CREATE POLICY "Enable insert for users based on user_id" ON "public"."annonce_comments" FOR INSERT WITH CHECK ((auth.uid() = user_id));
 
-CREATE POLICY "Enable insert for users based on user_id" ON "public"."annonce_likes" FOR INSERT TO authenticated WITH CHECK ((auth.uid() = user_id));
+CREATE POLICY "Enable insert for users based on user_id" ON "public"."annonce_likes" FOR INSERT WITH CHECK ((auth.uid() = user_id));
 
 CREATE POLICY "Enable read access for all users" ON "public"."annonce_comments" FOR SELECT USING (true);
 
@@ -122,11 +122,11 @@ CREATE POLICY "Enable read access for all users" ON "public"."annonce_likes" FOR
 
 CREATE POLICY "Enable read access for all users" ON "public"."annonces" FOR SELECT USING (true);
 
-CREATE POLICY "Only mod can insert annonces" ON "public"."annonces" FOR INSERT TO authenticated WITH CHECK (((EXISTS ( SELECT 1
+CREATE POLICY "Only mod can insert annonces" ON "public"."annonces" FOR INSERT WITH CHECK (((EXISTS ( SELECT 1
    FROM public.user_roles
   WHERE ((auth.uid() = user_roles.user_id) AND (user_roles.role = 'mod'::public.roles)))) AND (auth.uid() = user_id)));
 
-CREATE POLICY "User can see its own role" ON "public"."user_roles" FOR SELECT TO authenticated USING ((auth.uid() = user_id));
+CREATE POLICY "User can see its own role" ON "public"."user_roles" FOR SELECT USING ((auth.uid() = user_id));
 
 ALTER TABLE "public"."annonce_comments" ENABLE ROW LEVEL SECURITY;
 

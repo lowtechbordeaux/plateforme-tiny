@@ -22,7 +22,7 @@ export default function CreateForm() {
     const [state, formAction] = useFormState(createAnnonce, initialState)
 
     return (
-        <div className="flex flex-col my-8 w-full max-w-sm px-4">
+        <div className="flex flex-col w-full max-w-sm">
             <h2 className='mb-2 text-lg font-semibold'>Nouvelle annonce</h2>
             <form action={formAction}>
                 <div className='flex flex-col justify-center my-4'>

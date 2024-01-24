@@ -6,6 +6,7 @@ import { config, library } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
+import Footer from "@/components/Footer";
 
 config.autoAddCss = false
 library.add(fas, far)
@@ -28,23 +29,17 @@ export default function RootLayout({
   return (
     <html lang="fr" className={GeistSans.className}>
       <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
+        <header className="sticky top-0 z-50 w-full backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <Header />
+        </header>
 
-          <div className="flex-1 w-full flex flex-col items-center">
+        <main className="">
+          <div className="container mx-auto flex flex-col items-center p-4">
             {children}
           </div>
 
-          <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-            <p>
-              <span>🌴</span>
-              {" "}
-              <span> LowTechLabBdx</span>
-              <span> ©️ 2024 </span>
-            </p>
-          </footer>
+          <Footer />
         </main>
-
       </body>
     </html>
   );

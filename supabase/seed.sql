@@ -86,6 +86,9 @@ INSERT INTO "public"."annonce_likes" ("user_id", "annonce_id") VALUES
 INSERT INTO "public"."user_roles" ("user_id", "role") VALUES
 	('ca09e145-d985-46d8-aa93-922c71c16ae9', 'mod');
 
+INSERT INTO "public"."user_profiles" ("id", "user_id", "created_at","name","short_desc","description") VALUES
+	('ca09e145-d985-46d8-aa93-922c71c16ae9', 'ca09e145-d985-46d8-aa93-922c71c16ae9', '2024-01-24 16:59:36.277207+00','Bob','Menuisier','Jaime le bois');
+
 
 --
 -- PostgreSQL database dump complete

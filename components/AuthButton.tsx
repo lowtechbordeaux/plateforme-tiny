@@ -19,8 +19,8 @@ export default async function AuthButton() {
 
   return user ? (
     <div className="flex items-center gap-4">
-      <Link href="/profile">
-        <span className="mx-2">Profile</span>
+      <Link href="/profil">
+        <span className="mx-2">Profil</span>
       </Link>
       <form action={signOut}>
         <Button className="py-2 px-4">

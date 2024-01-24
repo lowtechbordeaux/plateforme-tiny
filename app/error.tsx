@@ -17,7 +17,7 @@ export default function Error({
 
     return (
         <div className='flex flex-col center gap-4 my-8'>
-            <h2>Probleme de formulaire</h2>
+            <h2>Une erreur est survenue</h2>
             <Button
                 onClick={
                     // Attempt to recover by trying to re-render the segment
