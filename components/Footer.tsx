@@ -56,12 +56,12 @@ export default function Header() {
           </h3>
           <div className="flex gap-8">
             <img
-              src="./assets/images/UE-FSE.jpg"
+              src="/assets/images/UE-FSE.jpg"
               className="h-20"
               alt="Union Européene Fond Social Européen"
             />
             <img
-              src="./assets/images/Region_Nouvelle-Aquitaine_drapeau.jpg"
+              src="/assets/images/Region_Nouvelle-Aquitaine_drapeau.jpg"
               className="h-20"
               alt="Drapeau region nouvelle aquitaine"
             />

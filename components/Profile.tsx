@@ -26,10 +26,18 @@ export default async function Profile(
 
                 <h2 className='mt-4 font-bold'>Contact</h2>
 
-                <h3 className='mt-2 font-bold text-muted-foreground text-sm'>Mail</h3>
-                <span>{profile.email}</span>
-                <h3 className='mt-2 font-bold text-muted-foreground text-sm'>Telephone</h3>
-                <span>{profile.telephone}</span>
+                {profile.email &&
+                    <>
+                        <h3 className='mt-2 font-bold text-muted-foreground text-sm'>Mail</h3>
+                        <span>{profile.email}</span>
+                    </>
+                }
+                {profile.telephone &&
+                    <>
+                        <h3 className='mt-2 font-bold text-muted-foreground text-sm'>Telephone</h3>
+                        <span>{profile.telephone}</span>
+                    </>
+                }
             </CardContent>
 
         </Card>
