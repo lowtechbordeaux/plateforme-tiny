@@ -37,7 +37,7 @@ export default function EditForm({
             <p className='text-sm text-center text-muted-foreground'>Remplissez votre profil pour apparaitre dans l'annuaire, et rejoignez d'autres passionnés de low-techs !</p>
             <form action={formAction}>
                 <input type="hidden" name="id" value={profile?.id} />
-                <input type="hidden" name="avatar_url" value={profile?.avatar_url} />
+                <input type="hidden" name="avatar_url" value={profile?.avatar_url ?? ''} />
 
                 <h3 className='font-bold text-xl'>
                     Bio

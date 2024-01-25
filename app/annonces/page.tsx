@@ -23,6 +23,7 @@ export default async function Annonces() {
         .order('created_at', { ascending: false })
         .order('created_at', { referencedTable: 'comments', ascending: false })
         .limit(2, { referencedTable: 'comments' })
+        .limit(10)
 
     if (error) {
         return (
@@ -45,9 +46,9 @@ export default async function Annonces() {
                 }
             </div>
             <CardContent>
-                <div className="flex flex-col">
+                <div className="flex flex-col space-y-4">
                     {annonces?.map((annonce) => (
-                        <div key={annonce.id} className='mb-4'>
+                        <div key={annonce.id}>
                             <Annonce annonce={annonce} />
                         </div>
                     ))}

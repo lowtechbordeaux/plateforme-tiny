@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Tables } from '@/database.types';
 import Link from "next/link"
 
-import { CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card"
+import { Card, CardHeader, CardFooter, CardDescription, CardContent, CardTitle } from '@/components/ui/card';
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
@@ -89,18 +89,23 @@ export default async function Annonce({
 
     return (
         <Card className="">
-            <CardHeader className="p-4 flex flex-row items-center">
+            <div className="p-4 flex flex-row">
                 <Link href={`/annonce/${annonce.id}`} className="flex items-center gap-2 text-sm font-semibold">
-                    <Avatar className="w-8 h-8 border">
+                    <Avatar className="w-12 h-12 ">
                         <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
                         <AvatarFallback>AC</AvatarFallback>
                     </Avatar>
-                    {annonce.title}
                 </Link>
-                <span className="text-gray-500 dark:text-gray-400 ml-auto">
-                    {moment(annonce.created_at).format("DD/MM/YYYY HH:mm")}
-                </span>
-            </CardHeader>
+                <CardHeader>
+                    <CardTitle>{annonce.title}</CardTitle>
+                    <CardDescription>
+                        Le{' '}
+                        {moment(annonce.created_at).format("DD/MM/YYYY")}
+                        {' '}à{' '}
+                        {moment(annonce.created_at).format("HH:mm")}
+                    </CardDescription>
+                </CardHeader>
+            </div>
             <CardContent className="p-4">
                 <p>
                     {annonce.content}
