@@ -6,20 +6,21 @@ import { Tables } from '@/database.types';
 import Link from "next/link"
 
 import { Card, CardHeader, CardFooter, CardDescription, CardContent, CardTitle } from '@/components/ui/card';
-import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ProfileAvatar from './ProfileAvatar';
 
-type AnnonceWithLikesAndComments = Tables<'annonces'> & {
+type AnnonceWithRelations = Tables<'annonces'> & {
     likes_count: { count: number }[];
     comments_count: { count: number }[];
     comments: Tables<'annonce_comments'>[];
+    user_profile: Tables<'user_profiles'>;
 }
 export default async function Annonce({
     annonce,
 }: {
-    annonce: AnnonceWithLikesAndComments;
+    annonce: AnnonceWithRelations;
 }) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser()
@@ -35,11 +36,11 @@ export default async function Annonce({
         const { data: ownAnnonce, error } = await supabase
             .from("annonces")
             .select(` 
-            id,
-            likes_count: annonce_likes(count),
-            comments_count: annonce_comments(count),
-            comments: annonce_comments(id)
-         `)
+                id,
+                likes_count: annonce_likes(count),
+                comments_count: annonce_comments(count),
+                comments: annonce_comments(id)
+            `)
             .eq('id', annonce.id)
             .eq('annonce_likes.user_id', user.id)
             .eq('annonce_comments.user_id', user.id)
@@ -91,13 +92,13 @@ export default async function Annonce({
         <Card className="">
             <div className="p-4 flex flex-row">
                 <Link href={`/annonce/${annonce.id}`} className="flex items-center gap-2 text-sm font-semibold">
-                    <Avatar className="w-12 h-12 ">
-                        <AvatarImage alt="@shadcn" src="/placeholder-user.jpg" />
-                        <AvatarFallback>AC</AvatarFallback>
-                    </Avatar>
+                    <ProfileAvatar profile={annonce.user_profile} className="w-12 h-12" />
                 </Link>
                 <CardHeader>
                     <CardTitle>{annonce.title}</CardTitle>
+                    <CardDescription>
+                        Par {annonce.user_profile.name}
+                    </CardDescription>
                     <CardDescription>
                         Le{' '}
                         {moment(annonce.created_at).format("DD/MM/YYYY")}
@@ -133,6 +134,6 @@ export default async function Annonce({
                     ))}
                 </div>
             </CardFooter>
-        </Card>
+        </Card >
     )
 }

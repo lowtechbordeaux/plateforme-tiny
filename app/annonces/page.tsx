@@ -18,7 +18,8 @@ export default async function Annonces() {
             *, 
             likes_count: annonce_likes(count),
             comments_count: annonce_comments(count),
-            comments: annonce_comments(*)
+            comments: annonce_comments(*),
+            user_profile: user_profiles!user_id(*)
          `)
         .order('created_at', { ascending: false })
         .order('created_at', { referencedTable: 'comments', ascending: false })
@@ -26,6 +27,7 @@ export default async function Annonces() {
         .limit(10)
 
     if (error) {
+        console.error(error)
         return (
             <div>
                 {error.message}

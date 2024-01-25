@@ -175,6 +175,13 @@ CREATE POLICY "Only mod can insert annonces" ON "public"."annonces" FOR INSERT W
    FROM public.user_roles
   WHERE ((auth.uid() = user_roles.user_id) AND (user_roles.role = 'mod'::public.roles)))) AND (auth.uid() = user_id)));
 
+create policy "Enable delete for users based on user_id"
+on "public"."annonces"
+as permissive
+for delete
+to public
+using ((auth.uid() = user_id));
+
 CREATE POLICY "User can see its own role" ON "public"."user_roles" FOR SELECT USING ((auth.uid() = user_id));
 
 ALTER TABLE "public"."annonce_comments" ENABLE ROW LEVEL SECURITY;

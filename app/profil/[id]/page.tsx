@@ -3,16 +3,6 @@ import Profile from '@/components/Profile';
 import { getUser } from '@/lib/user';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-    DialogFooter,
-    DialogClose,
-} from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { redirect } from "next/navigation";
@@ -57,31 +47,6 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                         <Link href={`/profil/edit`}>
                             <Button size="sm">Modifier mon profil</Button>
                         </Link>
-
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button size="sm" variant="destructive">Supprimer mon profil</Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Etes vous sûr?</DialogTitle>
-                                    <DialogDescription>
-                                        Votre compte ne sera pas supprimé, mais votre profil disparaitra de l'annuaire.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <DialogFooter>
-                                    <DialogClose asChild>
-                                        <Button size="sm" className="mx-1" variant="secondary">
-                                            Annuler
-                                        </Button>
-                                    </DialogClose>
-                                    <Button size="sm" className="mx-1" variant="destructive" ssrClick={deleteProfile}>
-                                        Supprimer
-                                    </Button>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
-
 
                         <form action={signOut}>
                             <Button size="sm" variant="outline">Se déconnecter</Button>
