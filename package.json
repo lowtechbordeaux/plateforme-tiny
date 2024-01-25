@@ -4,6 +4,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "reset": "supabase db reset",
+    "pull-migration": "supabase db diff -f",
+    "pull-data": "supabase db dump --local -f data.sql",
     "gen": "supabase gen types typescript --local > database.types.ts"
   },
   "dependencies": {
