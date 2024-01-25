@@ -13,9 +13,11 @@ import {
     DialogFooter,
     DialogClose,
 } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 import { redirect } from "next/navigation";
 
-import { deleteProfile } from './actions';
+import { changeVisibility, deleteProfile } from './actions';
 
 export default async function ProfilePage({ params }: { params: { id: string } }) {
     const supabase = createClient();
@@ -27,7 +29,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         .select(`
             *
          `)
-        .eq('id', id)
+        .eq('user_id', id)
         .single();
 
     if (error) {
@@ -52,7 +54,6 @@ export default async function ProfilePage({ params }: { params: { id: string } }
             {isMyProfile &&
                 <div className='mt-4 flex flex-col items-center'>
                     <div className='flex mb-4 space-x-2'>
-
                         <Link href={`/profil/edit`}>
                             <Button size="sm">Modifier mon profil</Button>
                         </Link>
@@ -86,22 +87,20 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                             <Button size="sm" variant="outline">Se déconnecter</Button>
                         </form>
                     </div>
+                    <div className="flex items-center space-x-2 mb-4">
+                        <Switch
+                            id="profile-visibility"
+                            checked={profile.visible}
+                            onCheckedChange={changeVisibility}
+                        />
+                        <Label htmlFor="profile-visibility">
+                            {profile.visible ? 'Profil visible' : 'Profil masqué'}
+                        </Label>
+                    </div>
                 </div>
             }
 
             {profile && <Profile profile={profile} />}
-
-            {
-                isMyProfile &&
-                <div className='mt-4 text-center text-muted-foreground'>
-                    <p>
-                        Votre profil est visible publiquement et apparait dans l'annuaire.
-                    </p>
-                    <p>
-                        Si vous ne souhaitez plus apparaitre dans l'annuaire, vous devez le supprimer.
-                    </p>
-                </div>
-            }
         </div>
     )
 }

@@ -1,62 +1,35 @@
-create table "public"."user_profiles" (
-    "id" uuid not null default gen_random_uuid(),
-    "user_id" uuid not null default auth.uid(),
-    "created_at" timestamp with time zone not null default now(),
-    "name" text not null,
-    "short_desc" text,
-    "description" text
-);
+alter table "public"."user_profiles" add column "visible" boolean default false;
+alter table "public"."user_profiles" add column "name" text;
+alter table "public"."user_profiles" add column "short_desc" text;
+alter table "public"."user_profiles" add column "description" text;
+alter table "public"."user_profiles" add column "email" text;
+alter table "public"."user_profiles" add column "organisation" text;
+alter table "public"."user_profiles" add column "telephone" text;
+alter table "public"."user_profiles" add column "avatar_url" text;
+
+INSERT INTO "storage"."buckets" ("id", "name", "owner", "created_at", "updated_at", "public", "avif_autodetection", "file_size_limit", "allowed_mime_types", "owner_id") VALUES
+	('avatars', 'avatars', NULL, '2024-01-25 17:37:33.475659+00', '2024-01-25 17:37:33.475659+00', true, false, 10485760, '{image/*}', NULL);
+
+create policy "Auth users can upload avatar"
+on "storage"."objects"
+as permissive
+for insert
+to public
+with check (((bucket_id = 'avatars'::text) AND (auth.role() = 'authenticated'::text)));
 
 
-alter table "public"."user_profiles" enable row level security;
+create policy "Everyone can read avatar"
+on "storage"."objects"
+as permissive
+for select
+to public
+using ((bucket_id = 'avatars'::text));
 
-CREATE UNIQUE INDEX user_profiles_pkey ON public.user_profiles USING btree (id);
 
-CREATE UNIQUE INDEX user_profiles_user_id_2_key ON public.user_profiles USING btree (user_id);
 
-alter table "public"."user_profiles" add constraint "user_profiles_pkey" PRIMARY KEY using index "user_profiles_pkey";
-
-alter table "public"."user_profiles" add constraint "user_profiles_user_id_2_key" UNIQUE using index "user_profiles_user_id_2_key";
-
-alter table "public"."user_profiles" add constraint "user_profiles_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
-
-alter table "public"."user_profiles" validate constraint "user_profiles_user_id_fkey";
-
-GRANT ALL ON TABLE "public"."user_profiles" TO "anon";
-GRANT ALL ON TABLE "public"."user_profiles" TO "authenticated";
-GRANT ALL ON TABLE "public"."user_profiles" TO "service_role";
-
-create policy "Enable read access for all users"
+create policy "Enable read access for visible users"
 on "public"."user_profiles"
 as permissive
 for select
 to public
-using (true);
-
-
-create policy "Users can delete their profile"
-on "public"."user_profiles"
-as permissive
-for delete
-to public
-using ((auth.uid() = user_id));
-
-
-create policy "Users can insert their profile"
-on "public"."user_profiles"
-as permissive
-for insert
-to public
-with check ((auth.uid() = user_id));
-
-
-create policy "Users can update their profile"
-on "public"."user_profiles"
-as permissive
-for update
-to public
-using ((auth.uid() = user_id))
-with check ((auth.uid() = user_id));
-
-
-
+using (visible = true);

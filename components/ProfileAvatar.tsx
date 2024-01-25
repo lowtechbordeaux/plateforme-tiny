@@ -19,8 +19,9 @@ const ProfileAvatar = React.forwardRef<
             try {
                 const { data: { publicUrl } } = supabase
                     .storage
-                    .from('avatar')
+                    .from('avatars')
                     .getPublicUrl(path)
+                console.log(publicUrl)
 
                 setUrl(publicUrl)
             } catch (error) {
@@ -34,7 +35,7 @@ const ProfileAvatar = React.forwardRef<
     return (
         <Avatar {...props}>
             <AvatarImage src={url} className="object-cover" />
-            <AvatarFallback>{profile.name.slice(0, 2)}</AvatarFallback>
+            <AvatarFallback>{profile?.name?.slice(0, 2)}</AvatarFallback>
         </Avatar>
     )
 })

@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache'
 import { getUser } from '@/lib/user';
 
 const RawProfile = z.object({
-    id: z.string(),
+    user_id: z.string(),
     name: z.string().min(3),
     short_desc: z.string(),
     description: z.string(),
@@ -37,10 +37,15 @@ export async function editProfile(prevState: any, formData: FormData):
     const supabase = createClient()
 
     if (profile.avatar_file && profile.avatar_file.size > 0) {
-        console.log(profile.avatar_file)
-        const filePath = Date.now() + '-' + profile.avatar_file.name
+        const filePath = profile.user_id + '.' + profile.avatar_file.name.split('.').pop()
         const avatarData = await profile.avatar_file.arrayBuffer()
-        const { error } = await supabase.storage.from('avatar').upload(filePath, avatarData);
+        const { error } = await supabase.storage
+            .from('avatars')
+            .upload(filePath, avatarData, {
+                cacheControl: '3600',
+                contentType: profile.avatar_file.type,
+                upsert: false
+            })
         if (error) {
             console.error(error)
             return {
@@ -62,7 +67,6 @@ export async function editProfile(prevState: any, formData: FormData):
         .from('user_profiles')
         .upsert({
             ...profile,
-            id: profile.id || undefined,
         })
         .select()
         .single()
@@ -76,6 +80,6 @@ export async function editProfile(prevState: any, formData: FormData):
     }
 
     revalidatePath('/annuaire')
-    revalidatePath(`/profil/${data.id}`)
-    redirect(`/profil/${data.id}`)
+    revalidatePath(`/profil/${data.user_id}`)
+    redirect(`/profil/${data.user_id}`)
 }

@@ -20,6 +20,12 @@ export default async function EditProfile() {
         .single();
 
     return (
-        <EditForm profile={profile} />
+        <div className="flex flex-col w-full max-w-sm">
+            <h2 className='mb-2 text-lg font-semibold'>Modifier mon profil</h2>
+            <p className='text-sm text-center text-muted-foreground mb-2'>
+                Remplissez votre profil pour apparaitre dans l'annuaire, et rejoignez d'autres passionnés de low-techs !
+            </p>
+            <EditForm profile={profile} />
+        </div>
     )
 }

@@ -68,8 +68,8 @@ export interface Database {
             foreignKeyName: "annonce_comments_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
           }
         ]
       }
@@ -98,8 +98,8 @@ export interface Database {
             foreignKeyName: "annonce_likes_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
           }
         ]
       }
@@ -130,8 +130,8 @@ export interface Database {
             foreignKeyName: "annonces_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
           }
         ]
       }
@@ -141,36 +141,36 @@ export interface Database {
           created_at: string
           description: string | null
           email: string | null
-          id: string
-          name: string
+          name: string | null
           organisation: string | null
           short_desc: string | null
           telephone: string | null
           user_id: string
+          visible: boolean | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
           description?: string | null
           email?: string | null
-          id?: string
-          name: string
+          name?: string | null
           organisation?: string | null
           short_desc?: string | null
           telephone?: string | null
           user_id?: string
+          visible?: boolean | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
           description?: string | null
           email?: string | null
-          id?: string
-          name?: string
+          name?: string | null
           organisation?: string | null
           short_desc?: string | null
           telephone?: string | null
           user_id?: string
+          visible?: boolean | null
         }
         Relationships: [
           {
@@ -200,8 +200,8 @@ export interface Database {
             foreignKeyName: "user_roles_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
+            referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
           }
         ]
       }

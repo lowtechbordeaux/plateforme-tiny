@@ -19,9 +19,13 @@ export default async function MyProfilePage() {
         .eq('user_id', user.id)
         .single();
 
-    if (!profile) {
+    if (error) {
+        throw error
+    }
+
+    if (!profile.name) {
         redirect('/profil/edit')
     } else {
-        redirect(`/profil/${profile.id}`)
+        redirect(`/profil/${profile.user_id}`)
     }
 }

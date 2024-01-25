@@ -26,22 +26,23 @@ function Submit() {
 export default function EditForm({
     profile,
 }: {
-    profile?: Tables<'user_profiles'>;
+    profile: Tables<'user_profiles'>;
 }) {
     const [st, formAction] = useFormState<string>(editProfile, initialState)
     const state = st as InitialState;
 
     return (
-        <div className="flex flex-col w-full max-w-sm">
-            <h2 className='mb-2 text-lg font-semibold'>Modifier mon profil</h2>
-            <p className='text-sm text-center text-muted-foreground'>Remplissez votre profil pour apparaitre dans l'annuaire, et rejoignez d'autres passionnés de low-techs !</p>
+        <div className="">
             <form action={formAction}>
-                <input type="hidden" name="id" value={profile?.id} />
-                <input type="hidden" name="avatar_url" value={profile?.avatar_url ?? ''} />
+                <input type="hidden" name="user_id" value={profile.user_id} />
+                <input type="hidden" name="avatar_url" value={profile.avatar_url ?? ''} />
 
                 <h3 className='font-bold text-xl'>
                     Bio
                 </h3>
+                <i className='font-light text-sm mb-2'>
+                    Parlez un peu de vous !
+                </i>
 
                 <div className='flex flex-col justify-center my-4'>
                     <InputField
@@ -109,7 +110,9 @@ export default function EditForm({
                                         <ProfileAvatar profile={profile} className='w-16 h-16' />
                                     </div>
                                     :
-                                    <span>Pas encore d'image de profil</span>
+                                    <span className='flex items-center text-center'>
+                                        Pas encore d'image de profil
+                                    </span>
                                 }
                             </div>
                         }
@@ -146,9 +149,7 @@ export default function EditForm({
                             maxLength: 50,
                         }}
                     />
-                    <i className='mb-4 text-center text-sm'>En enregistrant ces informations, vous acceptez de les faire apparaitre publiquement dans l'annuaire.</i>
                     <Submit />
-                    {!profile && <p className='mt-2 text-center text-muted-foreground'>Votre profil n'a pas encore été créé et n'est donc pas affiché dans l'annuaire.</p>}
                 </div>
             </form>
             {state.submitError && <span className='text-red-500 text-end text-sm font-light'>{state.submitError}</span>}

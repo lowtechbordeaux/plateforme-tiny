@@ -40,6 +40,13 @@ SET default_tablespace = '';
 
 SET default_table_access_method = "heap";
 
+create table IF NOT EXISTS "public"."user_profiles" (
+    "user_id" uuid not null default auth.uid(),
+    "created_at" timestamp with time zone not null default now()
+);
+
+ALTER TABLE "public"."user_profiles" OWNER TO "postgres";
+
 CREATE TABLE IF NOT EXISTS "public"."annonce_comments" (
     "created_at" timestamp with time zone DEFAULT now() NOT NULL,
     "user_id" uuid DEFAULT auth.uid() NOT NULL,
@@ -74,6 +81,15 @@ CREATE TABLE IF NOT EXISTS "public"."user_roles" (
 
 ALTER TABLE "public"."user_roles" OWNER TO "postgres";
 
+
+alter table "public"."user_profiles" enable row level security;
+
+
+ALTER TABLE ONLY "public"."user_profiles"
+    ADD CONSTRAINT "user_profiles_user_id_key" PRIMARY KEY ("user_id");
+
+alter table "public"."user_profiles" add constraint "user_profiles_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE not valid;
+
 ALTER TABLE ONLY "public"."annonce_comments"
     ADD CONSTRAINT "annonce_comments_pkey" PRIMARY KEY ("id");
 
@@ -87,22 +103,55 @@ ALTER TABLE ONLY "public"."user_roles"
     ADD CONSTRAINT "roles_pkey" PRIMARY KEY ("user_id");
 
 ALTER TABLE ONLY "public"."annonce_comments"
-    ADD CONSTRAINT "annonce_comments_annonce_id_fkey" FOREIGN KEY (annonce_id) REFERENCES public.annonces(id);
+    ADD CONSTRAINT "annonce_comments_annonce_id_fkey" FOREIGN KEY (annonce_id) REFERENCES public.annonces(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."annonce_comments"
-    ADD CONSTRAINT "annonce_comments_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id);
+    ADD CONSTRAINT "annonce_comments_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."annonce_likes"
     ADD CONSTRAINT "annonce_likes_annonce_id_fkey" FOREIGN KEY (annonce_id) REFERENCES public.annonces(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."annonce_likes"
-    ADD CONSTRAINT "annonce_likes_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "annonce_likes_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."annonces"
-    ADD CONSTRAINT "annonces_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "annonces_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 ALTER TABLE ONLY "public"."user_roles"
-    ADD CONSTRAINT "user_roles_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+    ADD CONSTRAINT "user_roles_user_id_fkey" FOREIGN KEY (user_id) REFERENCES public.user_profiles(user_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+create policy "Users can select their profile"
+on "public"."user_profiles"
+as permissive
+for select
+to public
+using (auth.uid() = user_id);
+
+
+create policy "Users can delete their profile"
+on "public"."user_profiles"
+as permissive
+for delete
+to public
+using ((auth.uid() = user_id));
+
+
+create policy "Users can insert their profile"
+on "public"."user_profiles"
+as permissive
+for insert
+to public
+with check ((auth.uid() = user_id));
+
+
+create policy "Users can update their profile"
+on "public"."user_profiles"
+as permissive
+for update
+to public
+using ((auth.uid() = user_id))
+with check ((auth.uid() = user_id));
 
 CREATE POLICY "Admin can assign role" ON "public"."user_roles" FOR INSERT WITH CHECK ((EXISTS ( SELECT 1
    FROM public.user_roles user_roles_1
@@ -141,6 +190,10 @@ GRANT USAGE ON SCHEMA "public" TO "anon";
 GRANT USAGE ON SCHEMA "public" TO "authenticated";
 GRANT USAGE ON SCHEMA "public" TO "service_role";
 
+GRANT ALL ON TABLE "public"."user_profiles" TO "anon";
+GRANT ALL ON TABLE "public"."user_profiles" TO "authenticated";
+GRANT ALL ON TABLE "public"."user_profiles" TO "service_role";
+
 GRANT ALL ON TABLE "public"."annonce_comments" TO "anon";
 GRANT ALL ON TABLE "public"."annonce_comments" TO "authenticated";
 GRANT ALL ON TABLE "public"."annonce_comments" TO "service_role";
@@ -172,4 +225,25 @@ ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TAB
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES  TO "authenticated";
 ALTER DEFAULT PRIVILEGES FOR ROLE "postgres" IN SCHEMA "public" GRANT ALL ON TABLES  TO "service_role";
 
+
+-- inserts a row into public.user_profiles
+create function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.user_profiles (user_id)
+  values (new.id);
+  return new;
+end;
+$$;
+
+-- trigger the function every time a user is created
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+
+
 RESET ALL;
+
