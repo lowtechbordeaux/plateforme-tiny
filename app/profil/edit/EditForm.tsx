@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { editProfile } from './actions'
 import { InputField, TextAreaField } from '@/components/ui/forms'
 import { Tables } from '@/database.types'
+import ProfileAvatar from '@/components/ProfileAvatar'
 
 type InitialState = {
     validationErrors?: {
@@ -36,6 +37,7 @@ export default function EditForm({
             <p className='text-sm text-center text-muted-foreground'>Remplissez votre profil pour apparaitre dans l'annuaire, et rejoignez d'autres passionnés de low-techs !</p>
             <form action={formAction}>
                 <input type="hidden" name="id" value={profile?.id} />
+                <input type="hidden" name="avatar_url" value={profile?.avatar_url} />
 
                 <h3 className='font-bold text-xl'>
                     Bio
@@ -76,15 +78,7 @@ export default function EditForm({
                             maxLength: 400,
                         }}
                     />
-                    <InputField
-                        name='avatar_file'
-                        type="file"
-                        title='Avatar'
-                        validationErrors={state.validationErrors}
-                        inputReq={{
-                            required: false,
-                        }}
-                    />
+
                     <InputField
                         name='organisation'
                         title="Faites vous partie d'un groupe de travail ?"
@@ -96,6 +90,30 @@ export default function EditForm({
                             maxLength: 15,
                         }}
                     />
+
+                    <div className='flex'>
+
+                        <InputField
+                            name='avatar_file'
+                            type="file"
+                            title='Image de profil'
+                            validationErrors={state.validationErrors}
+                            inputReq={{
+                                required: false,
+                            }}
+                        />
+                        {profile &&
+                            <div className='flex justify-center ml-4'>
+                                {profile.avatar_url ?
+                                    <div>
+                                        <ProfileAvatar profile={profile} className='w-16 h-16' />
+                                    </div>
+                                    :
+                                    <span>Pas encore d'image de profil</span>
+                                }
+                            </div>
+                        }
+                    </div>
 
                     <h3 className='font-bold text-xl'>
                         Contact

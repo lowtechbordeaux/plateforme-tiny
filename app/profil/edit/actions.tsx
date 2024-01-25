@@ -36,7 +36,8 @@ export async function editProfile(prevState: any, formData: FormData):
 
     const supabase = createClient()
 
-    if (profile.avatar_file) {
+    if (profile.avatar_file && profile.avatar_file.size > 0) {
+        console.log(profile.avatar_file)
         const filePath = Date.now() + '-' + profile.avatar_file.name
         const avatarData = await profile.avatar_file.arrayBuffer()
         const { error } = await supabase.storage.from('avatar').upload(filePath, avatarData);
@@ -47,8 +48,8 @@ export async function editProfile(prevState: any, formData: FormData):
             }
         }
         profile.avatar_url = filePath
-        delete profile.avatar_file
     }
+    delete profile.avatar_file
 
     const user = await getUser(supabase)
     if (!user) {
