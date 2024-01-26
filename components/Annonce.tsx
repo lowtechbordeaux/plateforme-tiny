@@ -115,12 +115,12 @@ export default async function Annonce({
             <CardFooter className="p-2 pb-4 grid gap-2">
                 <div className="flex items-center w-full">
                     <Button size="icon" variant="ghost" disabled={!user} ssrClick={user && like.bind(null, annonce.id)}>
-                        <FontAwesomeIcon icon={`fa-${liked ? 'solid' : 'regular'} fa-heart`} />
+                        <FontAwesomeIcon icon={[liked ? 'fas' : 'far', 'heart']} />
                         <span className='ml-2'>{nbLikes}</span>
                         <span className="sr-only">Like</span>
                     </Button>
                     <Button size="icon" variant="ghost" disabled={!user} ssrClick={user && comment.bind(null, annonce.id)}>
-                        <FontAwesomeIcon icon={`fa-${commented ? 'solid' : 'regular'} fa-comment`} />
+                        <FontAwesomeIcon icon={[commented ? 'fas' : 'far', 'comment']} />
                         <span className='ml-2'>{nbComments}</span>
                         <span className="sr-only">Comments</span>
                     </Button>

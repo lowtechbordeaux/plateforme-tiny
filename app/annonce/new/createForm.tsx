@@ -1,5 +1,6 @@
 'use client'
 
+// @ts-expect-error
 import { useFormState, useFormStatus } from 'react-dom'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
