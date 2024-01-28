@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { changeVisibility, deleteProfile } from './actions';
 
@@ -22,11 +22,11 @@ export default async function ProfilePage({ params }: { params: { id: string } }
         .eq('user_id', id)
         .single();
 
+    if (!profile) {
+        notFound();
+    }
     if (error) {
         throw error;
-    }
-    if (!profile) {
-        redirect('/annuaire')
     }
     const isMyProfile = user && user.id === profile.user_id;
 

@@ -45,7 +45,7 @@ export default function EditForm({
                     Parlez un peu de vous !
                 </i>
 
-                <div className='flex flex-col justify-center my-4'>
+                <div className='flex flex-col justify-center my-4 space-y-2'>
                     <InputField
                         name='name'
                         title='Nom'

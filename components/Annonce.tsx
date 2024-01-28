@@ -3,18 +3,20 @@ import { revalidatePath } from 'next/cache'
 
 import moment from 'moment';
 import { Tables } from '@/database.types';
-import Link from "next/link"
 
-import { Card, CardHeader, CardFooter, CardDescription, CardContent, CardTitle } from '@/components/ui/card';
+import { CardDescription, CardTitle } from '@/components/ui/card';
 import { Button } from "@/components/ui/button"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ProfileAvatar from './ProfileAvatar';
 
+type CommentWithProfile = Tables<'annonce_comments'> & {
+    profile: Tables<'user_profiles'>;
+}
 type AnnonceWithRelations = Tables<'annonces'> & {
     likes_count: { count: number }[];
     comments_count: { count: number }[];
-    comments: Tables<'annonce_comments'>[];
+    comments: CommentWithProfile[];
     user_profile: Tables<'user_profiles'>;
 }
 export default async function Annonce({
@@ -27,7 +29,6 @@ export default async function Annonce({
 
     const nbLikes = annonce.likes_count[0]?.count || 0
     const nbComments = annonce.comments_count[0]?.count || 0
-    const displayedComments = annonce.comments
 
     let commented = false
     let liked = false
@@ -71,69 +72,58 @@ export default async function Annonce({
         revalidatePath(`/annonce/${annonceId}`)
     }
 
-    async function comment(annonceId: string) {
-        "use server"
-        const supabase = createClient();
-        const { data, error } = await supabase
-            .from('annonce_comments')
-            .insert([
-                {
-                    annonce_id: annonceId,
-                    content: "random"
-                },
-            ])
-            .select()
-            .single()
-        revalidatePath('/annonces')
-        revalidatePath(`/annonce/${annonceId}`)
-    }
-
     return (
-        <Card className="">
-            <div className="p-4 flex flex-row">
-                <Link href={`/annonce/${annonce.id}`} className="flex items-center gap-2 text-sm font-semibold">
-                    <ProfileAvatar profile={annonce.user_profile} className="w-12 h-12" />
-                </Link>
-                <CardHeader>
-                    <CardTitle>{annonce.title}</CardTitle>
+        <div className="flex flex-col">
+            <div className="flex flex-row">
+                <ProfileAvatar profile={annonce.user_profile} className="w-12 h-12 rounded-full" />
+                <div className='flex flex-col flex-1 ml-4 justify-center'>
+                    <CardTitle className='mb-2'>{annonce.title}</CardTitle>
                     <CardDescription>
-                        Par {annonce.user_profile.name}
+                        {annonce.user_profile.name}
                     </CardDescription>
-                    <CardDescription>
-                        Le{' '}
-                        {moment(annonce.created_at).format("DD/MM/YYYY")}
-                        {' '}à{' '}
-                        {moment(annonce.created_at).format("HH:mm")}
-                    </CardDescription>
-                </CardHeader>
+                </div>
+                {/*                 <div>
+                    <FontAwesomeIcon icon={'ellipsis'} className="text-gray-500 hover:text-black" />
+                </div> */}
             </div>
-            <CardContent className="p-4">
-                <p>
-                    {annonce.content}
-                </p>
-            </CardContent>
-            <CardFooter className="p-2 pb-4 grid gap-2">
-                <div className="flex items-center w-full">
-                    <Button size="icon" variant="ghost" disabled={!user} ssrClick={user && like.bind(null, annonce.id)}>
-                        <FontAwesomeIcon icon={[liked ? 'fas' : 'far', 'heart']} />
-                        <span className='ml-2'>{nbLikes}</span>
-                        <span className="sr-only">Like</span>
-                    </Button>
-                    <Button size="icon" variant="ghost" disabled={!user} ssrClick={user && comment.bind(null, annonce.id)}>
-                        <FontAwesomeIcon icon={[commented ? 'fas' : 'far', 'comment']} />
-                        <span className='ml-2'>{nbComments}</span>
-                        <span className="sr-only">Comments</span>
-                    </Button>
+            <p className="mt-4">
+                {annonce.content}
+            </p>
+            <div className="mt-4 grid gap-2">
+                <div className="flex  items-center">
+                    <div className='flex-1 space-x-2'>
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={!user}
+                            ssrClick={user && like.bind(null, annonce.id)}
+                            className='group rounded-lg shadow-sm'
+                        >
+                            <FontAwesomeIcon
+                                icon={[liked ? 'fas' : 'far', 'heart']}
+                                className='group-hover:text-orange-500'
+                            />
+                            <span className='ml-2'>{nbLikes}</span>
+                            <span className="sr-only">Like</span>
+                        </Button>
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            className='rounded-lg shadow-sm hover:bg-background cursor-default'
+                        >
+                            <FontAwesomeIcon
+                                icon={[commented ? 'fas' : 'far', 'comment']}
+                                className='group-hover:text-orange-500'
+                            />
+                            <span className='ml-2'>{nbComments}</span>
+                            <span className="sr-only">Comments</span>
+                        </Button>
+                    </div>
+                    <div className='text-sm text-muted-foreground'>
+                        {moment(annonce.created_at).format("DD/MM/YYYY HH:mm")}
+                    </div>
                 </div>
-                <div>
-                    {displayedComments.map((comment) => (
-                        <div className='flex justify-between' key={comment.id}>
-                            <span>{comment.content}</span>
-                            <span>{moment(comment.created_at).format("DD/MM/YYYY HH:mm")}</span>
-                        </div>
-                    ))}
-                </div>
-            </CardFooter>
-        </Card >
+            </div >
+        </div >
     )
 }

@@ -1,11 +1,13 @@
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { Label } from "./label"
 
 type FormFieldProps = {
     name: string
-    title: string
+    title?: string
     inputReq?: any;
     placeHolder?: string,
+    className?: string,
     defaultValues?: { [key: string]: any }
     validationErrors?: { [key: string]: { _errors: string[] } }
 }
@@ -18,6 +20,7 @@ function FormField({
     inputReq,
     defaultValues,
     Component,
+    className,
     componentProps,
 }:
     FormFieldProps &
@@ -27,19 +30,19 @@ function FormField({
     }
 ) {
 
+    const error = validationErrors?.[name]?._errors[0];
     return (
-        <div className="mb-2">
-            <label htmlFor={name} className='mb-2 font-semibold tracking-tight'>{title}</label>
+        <div className={className}>
+            {title && <Label htmlFor={name} className='font-semibold'>{title}</Label>}
             {inputReq?.required && <span className="text-faded-foreground text-sm font-light italic"> (requis)</span>}
             <Component
                 name={name}
                 placeholder={placeHolder}
-                className='mb-2'
                 defaultValue={defaultValues?.[name]}
                 {...inputReq}
                 {...componentProps}
             />
-            <span className='mb-4 text-slate-500 text-end text-sm font-light'>{validationErrors?.[name]?._errors[0]}</span>
+            {error && <span className='mt-2 mb-4 text-slate-500 text-end text-sm font-light'>{error}</span>}
         </div>
     )
 }

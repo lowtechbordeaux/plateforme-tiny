@@ -3,7 +3,7 @@
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
-
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils/tw"
 
 const Dialog = DialogPrimitive.Root
@@ -108,6 +108,51 @@ const DialogDescription = React.forwardRef<
 ))
 DialogDescription.displayName = DialogPrimitive.Description.displayName
 
+function DialogShort({
+  variant = "destructive",
+  title = "Etes vous sûr?",
+  actionText = "Ok",
+  triggerText,
+  description,
+  action,
+}: {
+
+  variant: string;
+  title: string;
+  actionText: string;
+  triggerText: string;
+  description: string;
+  action: () => {}
+}) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button size="sm" variant={variant}>{triggerText}</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          {description &&
+            <DialogDescription>
+              {description}
+            </DialogDescription>
+          }
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button size="sm" className="mx-1" variant="secondary">
+              Annuler
+            </Button>
+          </DialogClose>
+          <Button size="sm" className="mx-1" variant={variant} ssrClick={action}>
+            {actionText}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
 export {
   Dialog,
   DialogPortal,
@@ -119,4 +164,5 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
+  DialogShort,
 }

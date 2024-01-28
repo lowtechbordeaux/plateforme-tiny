@@ -18,12 +18,9 @@ export default async function Annonces() {
             *, 
             likes_count: annonce_likes(count),
             comments_count: annonce_comments(count),
-            comments: annonce_comments(*),
             user_profile: user_profiles!user_id(*)
          `)
         .order('created_at', { ascending: false })
-        .order('created_at', { referencedTable: 'comments', ascending: false })
-        .limit(2, { referencedTable: 'comments' })
         .limit(10)
 
     if (error) {
@@ -35,8 +32,8 @@ export default async function Annonces() {
         )
     }
     return (
-        <Card className='container'>
-            <div className='w-full flex justify-between'>
+        <div className='container flex flex-col items-center'>
+            <div className='flex justify-between'>
                 <CardHeader>
                     <CardTitle>Annonces</CardTitle>
                     <CardDescription>Retrouvez ici les annonces de nos membres afin de participer au projet !</CardDescription>
@@ -47,16 +44,19 @@ export default async function Annonces() {
                     </div>
                 }
             </div>
-            <CardContent>
-                <div className="flex flex-col space-y-4">
-                    {annonces?.map((annonce) => (
-                        <div key={annonce.id}>
-                            <Annonce annonce={annonce} />
-                        </div>
-                    ))}
-                </div>
-            </CardContent>
-        </Card>
+            <div className="flex flex-col w-[32rem] border divide-y">
+                {annonces?.map((annonce) => (
+
+                    <Link
+                        key={annonce.id}
+                        href={`/annonce/${annonce.id}`}
+                        className="p-4 hover:bg-gray-50 transition-colors"
+                    >
+                        <Annonce annonce={annonce} />
+                    </Link>
+                ))}
+            </div>
+        </div>
     )
 }
 //
