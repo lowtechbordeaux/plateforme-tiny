@@ -24,7 +24,7 @@ export default async function Annuaire() {
     }
 
     return (
-        <Card className='container'>
+        <div className='container flex flex-col items-center'>
             <CardHeader>
                 <CardTitle>Annuaire</CardTitle>
                 <CardDescription>Retrouvez ici tous les acteurs low-tech de la region !</CardDescription>
@@ -50,7 +50,7 @@ export default async function Annuaire() {
                     }
                 </div >
             </CardContent >
-        </Card >
+        </div>
     )
 }
 //

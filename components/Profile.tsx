@@ -6,7 +6,7 @@ export default async function Profile(
     { profile }: { profile: Tables<'user_profiles'> }
 ) {
     return (
-        <Card className='p-2'>
+        <Card className='p-2 w-full'>
             <CardHeader className="flex flex-row justify-between w-full pb-2 space-y-0">
                 <div className='flex flex-col space-y-1.5'>
                     <CardTitle>{profile.name || '?'}</CardTitle>

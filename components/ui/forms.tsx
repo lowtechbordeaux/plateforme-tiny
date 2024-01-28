@@ -57,11 +57,18 @@ export function InputField({ type = 'text', ...props }:
     )
 }
 
-export function TextAreaField({ ...props }: FormFieldProps) {
+export function TextAreaField({
+    rows = 4,
+    ...props
+}:
+    FormFieldProps & {
+        rows?: number
+    }
+) {
     return (
         <FormField
             Component={Textarea}
-            componentProps={{ rows: 4 }}
+            componentProps={{ rows }}
             {...props}
         />
     )

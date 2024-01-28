@@ -39,8 +39,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
     };
 
     return (
-        <div className='flex flex-col items-center'>
-
+        <div className='flex flex-col items-center w-full max-w-sm'>
             {isMyProfile &&
                 <div className='mt-4 flex flex-col items-center'>
                     <div className='flex mb-4 space-x-2'>
@@ -59,7 +58,7 @@ export default async function ProfilePage({ params }: { params: { id: string } }
                             onCheckedChange={changeVisibility}
                         />
                         <Label htmlFor="profile-visibility">
-                            {profile.visible ? 'Profil visible' : 'Profil masqué'}
+                            {profile.visible ? 'Profil visible' : 'Profil masqué'}{' '}sur l'annuaire
                         </Label>
                     </div>
                 </div>
