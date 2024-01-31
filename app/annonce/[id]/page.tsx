@@ -13,6 +13,11 @@ import Link from 'next/link';
 import ProfileAvatar from '@/components/ProfileAvatar';
 import moment from 'moment';
 import { InputField } from '@/components/ui/forms';
+import { Tables } from '@/database.types';
+
+type CommentsWithProfile = Tables<'annonce_comments'> & {
+    profile: Tables<'user_profiles'>
+}
 
 export default async function Annonces({ params }: { params: { id: string } }) {
     const supabase = createClient();
@@ -40,8 +45,8 @@ export default async function Annonces({ params }: { params: { id: string } }) {
          `)
         .order('created_at', { ascending: false })
         .eq('annonce_id', id)
+        .returns<CommentsWithProfile[]>()
         .throwOnError()
-
 
     async function comment(annonceId: string, formData: FormData) {
         "use server"
@@ -109,7 +114,7 @@ export default async function Annonces({ params }: { params: { id: string } }) {
                 </div>
                 <h3 className='font-semibold mb-2'>Commentaires</h3>
                 <div className='divide-y'>
-                    {comments.map((comment) => (
+                    {(comments || []).map((comment) => (
                         <div
                             key={comment.id}
                             className='py-4'

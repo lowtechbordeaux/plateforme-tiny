@@ -3,7 +3,7 @@
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button, ButtonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils/tw"
 
 const Dialog = DialogPrimitive.Root
@@ -117,7 +117,7 @@ function DialogShort({
   action,
 }: {
 
-  variant: string;
+  variant?: ButtonVariants;
   title: string;
   actionText: string;
   triggerText: string;
