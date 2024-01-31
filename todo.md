@@ -1,6 +1,5 @@
 - Delete comment
-- login/signup flow
-- comment form behaviour
+- comment form behaviour (optimistic)
 
 - skills enum
 - annuaire/annonce search
