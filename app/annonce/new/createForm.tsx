@@ -47,7 +47,6 @@ export default function CreateForm() {
                         inputReq={{
                             required: true,
                             minLength: 3,
-                            maxLength: 20,
                         }}
                         rows={6}
                     />
