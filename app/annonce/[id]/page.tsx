@@ -70,7 +70,7 @@ export default async function Annonces({ params }: { params: { id: string } }) {
     }
     return (
         <div className='flex flex-col w-full max-w-2xl'>
-            <div className='flex justify-between items-center mb-4'>
+            <div className='flex justify-between items-center my-4'>
                 <Link href="/annonces">
                     <Button variant="ghost"
                     >

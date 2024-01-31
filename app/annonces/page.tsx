@@ -32,19 +32,17 @@ export default async function Annonces() {
         )
     }
     return (
-        <div className='container flex flex-col items-center'>
-            <div className='flex justify-between'>
-                <CardHeader>
-                    <CardTitle>Annonces</CardTitle>
-                    <CardDescription>Retrouvez ici les annonces de nos membres afin de participer au projet !</CardDescription>
-                </CardHeader>
+        <div className='flex flex-col w-full max-w-2xl'>
+            <div className='flex flex-col space-y-1.5 mx-4 my-4'>
+                <CardTitle>Annonces</CardTitle>
+                <CardDescription>Retrouvez ici les annonces de nos membres afin de participer au projet !</CardDescription>
+            </div>
+            <div className='flex justify-center p-2'>
                 {canManageAnnonces &&
-                    <div className='flex items-center p-6'>
-                        <Link href="/annonce/new"><Button>Nouvelle annonce</Button></Link>
-                    </div>
+                    <Link href="/annonce/new"><Button>Nouvelle annonce</Button></Link>
                 }
             </div>
-            <div className="flex flex-col w-[32rem] border divide-y">
+            <div className="flex flex-col max-w-2xl sm:border-x border-y divide-y">
                 {annonces?.map((annonce) => (
 
                     <Link

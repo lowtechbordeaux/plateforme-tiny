@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch"
 import { notFound, redirect } from "next/navigation";
 
 import { changeVisibility, deleteProfile } from './actions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default async function ProfilePage({ params }: { params: { id: string } }) {
     const supabase = createClient();
@@ -40,8 +41,17 @@ export default async function ProfilePage({ params }: { params: { id: string } }
 
     return (
         <div className='flex flex-col items-center w-full max-w-sm'>
+            <div className='flex justify-between items-center my-2'>
+                <Link href="/annuaire">
+                    <Button variant="ghost"
+                    >
+                        <FontAwesomeIcon icon={['fas', 'arrow-left']} className="mr-2" />
+                        Annuaire
+                    </Button>
+                </Link>
+            </div>
             {isMyProfile &&
-                <div className='mt-4 flex flex-col items-center'>
+                <div className='flex flex-col items-center'>
                     <div className='flex mb-4 space-x-2'>
                         <Link href={`/profil/edit`}>
                             <Button size="sm">Modifier mon profil</Button>

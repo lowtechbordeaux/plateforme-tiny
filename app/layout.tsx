@@ -34,7 +34,7 @@ export default function RootLayout({
         </header>
 
         <main className="">
-          <div className="container mx-auto flex flex-col items-center p-4">
+          <div className="container mx-auto flex flex-col items-center p-0 mb-2">
             {children}
           </div>
 

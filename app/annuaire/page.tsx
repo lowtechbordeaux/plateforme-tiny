@@ -24,17 +24,17 @@ export default async function Annuaire() {
     }
 
     return (
-        <div className='container flex flex-col items-center'>
-            <CardHeader>
+        <div className='flex flex-col w-full max-w-2xl'>
+            <div className='flex flex-col space-y-1.5 mx-4 my-4'>
                 <CardTitle>Annuaire</CardTitle>
                 <CardDescription>Retrouvez ici tous les acteurs low-tech de la region !</CardDescription>
-            </CardHeader>
+            </div>
             <CardContent>
-                <div className="flex justify-center flex-wrap mx-4 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 justify-center place-content-center">
                     {profiles?.length ? profiles.map((profile) => (
                         <Link key={profile.user_id} href={`/profil/${profile.user_id}`}>
                             <Card
-                                className='flex flex-col justify-center items-center w-48 h-64 overflow-hidden m-2 p-2'
+                                className='flex flex-col justify-center items-center w-42 h-64 overflow-hidden p-2'
                             >
                                 <ProfileAvatar profile={profile} className='mb-2 h-32 w-32' />
                                 <CardTitle className="mt-2">{profile.name}</CardTitle>
